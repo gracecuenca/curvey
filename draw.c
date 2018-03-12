@@ -16,9 +16,35 @@
 
   Adds the circle at (cx, cy) with radius r to points
   ====================*/
-void add_circle( struct matrix * points,
-                 double cx, double cy, double cz,
-                 double r, double step ) {
+void add_circle( struct matrix * points, double cx, double cy, double cz, double r, double step ) {
+
+  /***
+  x = f(t) = rcosø + Xc --> x = f(t) = rcos2πt + Xc
+  y = g(t) = rsinø + Yc --> y = g(t) = rsin2πt + Yc
+  ***/
+
+  //initials
+  double x0 = r + cx;
+  double y0 = cy;
+
+  double x1,y1,t;
+
+  //loop to add points to curve
+  for(t = step; t < 1; t += step){
+    x1 = r*cos(2*M_PI*t) + cx;
+    y1 = r*sin(2*M_PI*t) + cy;
+
+    add_edge(x0,y0,cz,x1,y1,cz);
+
+    //reset
+    x0 = x1;
+    y0 = y1;
+  }
+
+  //cover up hole
+  x1 = r + cx;
+  y1 = cy;
+  add_edge(points, x0, y0, cz, x1, y1, cz);
 
 }
 
@@ -71,7 +97,7 @@ void add_curve( struct matrix *points, double x0, double y0, double x1, double y
     ycoefs->m[3][0];
 
     //adding the point!
-    add_edge(points, xi, yi, x, y);
+    add_edge(points, xi, yi, 0, x, y, 0);
 
     //reset
     xi = x;
@@ -80,7 +106,6 @@ void add_curve( struct matrix *points, double x0, double y0, double x1, double y
   }
 
 }
-
 
 
 /*======== void add_point() ==========
