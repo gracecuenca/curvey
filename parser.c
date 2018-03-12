@@ -81,12 +81,12 @@ void parse_file ( char * filename,
     line[strlen(line)-1]='\0';
     //printf(":%s:\n",line);
 
-    double xvals[3];
-    double yvals[3];
+    double xvals[4];
+    double yvals[4];
     double zvals[4];
     struct matrix *tmp;
     double theta;
-    double radius;
+    double radius[1];
     char axis;
 
     if ( strncmp(line, "line", strlen(line)) == 0 ) {
@@ -175,7 +175,7 @@ void parse_file ( char * filename,
     else if ( strncmp(line, "circle", strlen(line)) == 0){
       fgets(line, sizeof(line), f);
       sscanf(line, "%lf %lf %lf %lf", xvals, yvals, zvals, radius);
-      add_curve(edges, xvals[0], yvals[0], zavls[0], radius, 0.05);
+      add_circle(edges, xvals[0], yvals[0], zvals[0], radius[0], 0.05);
     }//end circle
 
     else if ( strncmp(line, "save", strlen(line)) == 0 ) {

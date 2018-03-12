@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include "ml6.h"
 #include "display.h"
 #include "draw.h"
 #include "matrix.h"
+
 
 /*======== void add_circle() ==========
   Inputs:   struct matrix * points
@@ -34,7 +36,7 @@ void add_circle( struct matrix * points, double cx, double cy, double cz, double
     x1 = r*cos(2*M_PI*t) + cx;
     y1 = r*sin(2*M_PI*t) + cy;
 
-    add_edge(x0,y0,cz,x1,y1,cz);
+    add_edge(points,x0,y0,cz,x1,y1,cz);
 
     //reset
     x0 = x1;
@@ -68,16 +70,16 @@ to the matrix points
 ====================*/
 void add_curve( struct matrix *points, double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3, double step, int type ) {
   //points need two: x version and y version
-  struct matrix xcoefs = generate_curve_coefs(x0,x1,x2,x3,type);
-  struct matrix ycoefs = generate_curve_coefs(y0,y1,y2,y3,type);
+  struct matrix * xcoefs = generate_curve_coefs(x0,x1,x2,x3,type);
+  struct matrix * ycoefs = generate_curve_coefs(y0,y1,y2,y3,type);
 
   //starting points
   //need to get in the form Ax^3 + Bx^2 + Cx + D
   //x is just D when t = 0
-  double xi = xcoefs[3][0]
+  double xi = xcoefs->m[3][0];
   //need to get in the form Ay^3 + By^2 + Cy + D
   //y is just D when t = 0
-  double yi = ycoefs[3][0];
+  double yi = ycoefs->m[3][0];
 
   double x,y;
 
