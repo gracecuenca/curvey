@@ -91,7 +91,7 @@ struct matrix * generate_curve_coefs( double p1, double p2, double p3, double p4
   coefs->lastcol = 4;
   ident(coefs);
 
-  if(type == hermite){
+  if(type == HERMITE){
     hb = make_hermite();
   }
   else{

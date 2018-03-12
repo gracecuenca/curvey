@@ -19,10 +19,11 @@
 void add_circle( struct matrix * points,
                  double cx, double cy, double cz,
                  double r, double step ) {
+
 }
 
 /*======== void add_curve() ==========
-Inputs:   struct matrix *points
+Inputs:  struct matrix *points
          double x0
          double y0
          double x1
@@ -39,13 +40,47 @@ Adds the curve bounded by the 4 points passsed as parameters
 of type specified in type (see matrix.h for curve type constants)
 to the matrix points
 ====================*/
-void add_curve( struct matrix *points,
-                double x0, double y0,
-                double x1, double y1,
-                double x2, double y2,
-                double x3, double y3,
-                double step, int type ) {
+void add_curve( struct matrix *points, double x0, double y0, double x1, double y1, double x2, double y2, double x3, double y3, double step, int type ) {
+  //points need two: x version and y version
+  struct matrix xcoefs = generate_curve_coefs(x0,x1,x2,x3,type);
+  struct matrix ycoefs = generate_curve_coefs(y0,y1,y2,y3,type);
+
+  //starting points
+  //need to get in the form Ax^3 + Bx^2 + Cx + D
+  //x is just D when t = 0
+  double xi = xcoefs[3][0]
+  //need to get in the form Ay^3 + By^2 + Cy + D
+  //y is just D when t = 0
+  double yi = ycoefs[3][0];
+
+  double x,y;
+
+  //now loops through with increments of step
+  double t;
+  for(t = step; t < 1; t += step){
+
+    //the next points
+    x = xcoefs->m[0][0]*pow(t,3) +
+    xcoefs->m[1][0]*pow(t,2)+
+    xcoefs->m[2][0]*t+
+    xcoefs->m[3][0];
+
+    y = ycoefs->m[0][0]*pow(t,3) +
+    ycoefs->m[1][0]*pow(t,2)+
+    ycoefs->m[2][0]*t+
+    ycoefs->m[3][0];
+
+    //adding the point!
+    add_edge(points, xi, yi, x, y);
+
+    //reset
+    xi = x;
+    yi = y;
+
+  }
+
 }
+
 
 
 /*======== void add_point() ==========
