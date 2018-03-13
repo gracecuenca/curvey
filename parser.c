@@ -69,8 +69,8 @@ void parse_file ( char * filename,
   clear_screen(s);
   color c;
   c.red = 255;
-  c.green = 0;
-  c.blue = 255;
+  c.green = 153;
+  c.blue = 0;
 
   if ( strcmp(filename, "stdin") == 0 )
     f = stdin;
@@ -187,10 +187,5 @@ void parse_file ( char * filename,
       draw_lines(edges, s, c);
       save_extension(s, line);
     }//end save
-
-    else{
-      printf("wrong args\n");
-    }
-
   }
 }
