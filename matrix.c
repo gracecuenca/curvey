@@ -88,8 +88,13 @@ struct matrix * generate_curve_coefs( double p1, double p2, double p3, double p4
   struct matrix * coefs = new_matrix(4,1);
   struct matrix * hb;
 
-  coefs->lastcol = 4;
+  coefs->lastcol = 1;
   ident(coefs);
+
+  coefs->m[0][0] = p1;
+  coefs->m[1][0] = p2;
+  coefs->m[2][0] = p3;
+  coefs->m[3][0] = p4;
 
   if(type == HERMITE){
     hb = make_hermite();
@@ -99,6 +104,7 @@ struct matrix * generate_curve_coefs( double p1, double p2, double p3, double p4
   }
 
   matrix_mult(hb, coefs);
+
   return coefs;
 }
 
